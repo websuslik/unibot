@@ -9,7 +9,7 @@ Unibot is a Telegram Bot API implementation written in Golang for an educational
 Just a simple echobot. Write some text message to a Bot and it will send the same message back to you. 
 
 This example is using long polling to receive updates.
-```
+```go
 package main
 
 import (
