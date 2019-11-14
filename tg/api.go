@@ -565,10 +565,10 @@ func (api *API) SendVoice(args *SendVoiceArgs) (*Message, error) {
 
 type SendVideoNoteArgs struct {
 	ChatID              *ChatID     `json:"chat_id"`
-	VideoNote           InputFile   `json:"video_note"`
+	VideoNote           string      `json:"video_note"`
 	Duration            int         `json:"duration,omitempty"`
 	Length              int         `json:"length,omitempty"`
-	Thumb               InputFile   `json:"thumb,omitempty"`
+	Thumb               string      `json:"thumb,omitempty"`
 	DisableNotification bool        `json:"disable_notification,omitempty"`
 	ReplyToMessageID    int         `json:"reply_to_message_id,omitempty"`
 	ReplyMarkup         interface{} `json:"reply_markup,omitempty"` // InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply
