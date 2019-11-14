@@ -13,10 +13,14 @@ import (
 
 const Timeout = 15
 
+type HTTPClient interface {
+	Do(req *http.Request, timeout time.Duration) (*http.Response, error)
+}
+
 // https://core.telegram.org/bots/api Bot API 4.4
 type API struct {
-	Token         string
-	ClientBuilder func() *http.Client
+	Token  string
+	Client HTTPClient
 }
 
 type MethodArgs interface {
@@ -42,9 +46,7 @@ func (api *API) buildRequest(method string, args MethodArgs) (*http.Request, err
 }
 
 func (api *API) sendRequest(request *http.Request, timeout time.Duration) ([]byte, error) {
-	client := api.ClientBuilder()
-	client.Timeout = timeout
-	response, err := client.Do(request)
+	response, err := api.Client.Do(request, timeout)
 	if err != nil {
 		return nil, err
 	}
