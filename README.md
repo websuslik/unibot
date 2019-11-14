@@ -19,12 +19,11 @@ import (
 )
 
 func main() {
-	timeout := time.Duration(30) * time.Second
 	api := tg.API{Token: "API_TOKEN"}
 	offset := 0
 	for {
 		args := &tg.GetUpdatesArgs{
-			Timeout: timeout,
+			Timeout: 30,
 			AllowedUpdates: []string{tg.AllowedUpdateMessage},
 			Offset: offset,
 		}

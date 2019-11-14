@@ -125,10 +125,10 @@ const (
 )
 
 type GetUpdatesArgs struct {
-	Offset         int           `json:"offset,omitempty"`
-	Limit          int           `json:"limit,omitempty"`
-	Timeout        time.Duration `json:"timeout,omitempty"`
-	AllowedUpdates []string      `json:"allowed_updates,omitempty"`
+	Offset         int      `json:"offset,omitempty"`
+	Limit          int      `json:"limit,omitempty"`
+	Timeout        int      `json:"timeout,omitempty"`
+	AllowedUpdates []string `json:"allowed_updates,omitempty"`
 }
 
 func (p *GetUpdatesArgs) GetRequestArgs() (*RequestArgs, error) {
@@ -141,7 +141,7 @@ func (api *API) GetUpdates(args *GetUpdatesArgs) (*[]*Update, error) {
 	method := "getUpdates"
 	var timeout time.Duration
 	if args.Timeout > 0 {
-		timeout = args.Timeout*time.Second - 1
+		timeout = (time.Duration(args.Timeout) - 1) * time.Second
 	} else {
 		timeout = 5 * time.Second
 	}
