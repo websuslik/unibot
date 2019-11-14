@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+const Timeout = 15
+
 // https://core.telegram.org/bots/api Bot API 4.4
 type API struct {
 	Token string
@@ -141,9 +143,9 @@ func (api *API) GetUpdates(args *GetUpdatesArgs) (*[]*Update, error) {
 	method := "getUpdates"
 	var timeout time.Duration
 	if args.Timeout > 0 {
-		timeout = (time.Duration(args.Timeout) - 1) * time.Second
+		timeout = (time.Duration(args.Timeout) + Timeout) * time.Second
 	} else {
-		timeout = 5 * time.Second
+		timeout = Timeout * time.Second
 	}
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
@@ -174,7 +176,7 @@ func (p *SetWebhookArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SetWebhook(args *SetWebhookArgs) (*bool, error) {
 	var success *bool
 	method := "setWebhook"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -196,7 +198,7 @@ func (p *DeleteWebhookArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) DeleteWebhook(args *DeleteWebhookArgs) (*bool, error) {
 	var success *bool
 	method := "deleteWebhook"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -218,7 +220,7 @@ func (p *GetWebhookInfoArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetWebhookInfo(args *GetWebhookInfoArgs) (*WebhookInfo, error) {
 	var webhookInfo *WebhookInfo
 	method := "getWebhookInfo"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -240,7 +242,7 @@ func (p *GetMeArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetMe(args *GetMeArgs) (*User, error) {
 	var user *User
 	method := "getMe"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -274,7 +276,7 @@ func (p *SendMessageArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendMessage(args *SendMessageArgs) (*Message, error) {
 	var message *Message
 	method := "sendMessage"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -300,7 +302,7 @@ func (p *ForwardMessageArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) ForwardMessage(args *ForwardMessageArgs) (*Message, error) {
 	var message *Message
 	method := "forwardMessage"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -335,7 +337,7 @@ func (p *SendPhotoArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendPhoto(args *SendPhotoArgs) (*Message, error) {
 	var message *Message
 	method := "sendPhoto"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -381,7 +383,7 @@ func (p *SendAudioArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendAudio(args *SendAudioArgs) (*Message, error) {
 	var message *Message
 	method := "sendAudio"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -424,7 +426,7 @@ func (p *SendDocumentArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendDocument(args *SendDocumentArgs) (*Message, error) {
 	var message *Message
 	method := "sendDocument"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -471,7 +473,7 @@ func (p *SendVideoArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendVideo(args *SendVideoArgs) (*Message, error) {
 	var message *Message
 	method := "sendVideo"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -517,7 +519,7 @@ func (p *SendAnimationArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendAnimation(args *SendAnimationArgs) (*Message, error) {
 	var message *Message
 	method := "sendAnimation"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -552,7 +554,7 @@ func (p *SendVoiceArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendVoice(args *SendVoiceArgs) (*Message, error) {
 	var message *Message
 	method := "sendVoice"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -595,7 +597,7 @@ func (p *SendVideoNoteArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendVideoNote(args *SendVideoNoteArgs) (*Message, error) {
 	var message *Message
 	method := "sendVideoNote"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -633,7 +635,7 @@ func (p *SendMediaGroupArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendMediaGroup(args *SendMediaGroupArgs) (*[]*Message, error) {
 	var messages *[]*Message
 	method := "sendMediaGroup"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -662,7 +664,7 @@ func (p *SendLocationArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendLocation(args *SendLocationArgs) (*Message, error) {
 	var message *Message
 	method := "sendLocation"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -689,7 +691,7 @@ func (p *EditMessageLiveLocationArgs) GetRequestArgs() (*RequestArgs, error) {
 // https://core.telegram.org/bots/api#editmessagelivelocation
 func (api *API) EditMessageLiveLocation(args *EditMessageLiveLocationArgs) (*OptionalMessage, error) {
 	method := "editMessageLiveLocation"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -711,7 +713,7 @@ func (p *StopMessageLiveLocationArgs) GetRequestArgs() (*RequestArgs, error) {
 // https://core.telegram.org/bots/api#stopmessagelivelocation
 func (api *API) StopMessageLiveLocation(args *StopMessageLiveLocationArgs) (*OptionalMessage, error) {
 	method := "stopMessageLiveLocation"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -740,7 +742,7 @@ func (p *SendVenueArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendVenue(args *SendVenueArgs) (*Message, error) {
 	var message *Message
 	method := "sendVenue"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -770,7 +772,7 @@ func (p *SendContactArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendContact(args *SendContactArgs) (*Message, error) {
 	var message *Message
 	method := "sendContact"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -798,7 +800,7 @@ func (p *SendPollArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendPoll(args *SendPollArgs) (*Message, error) {
 	var message *Message
 	method := "sendPoll"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -835,7 +837,7 @@ func (p *SendChatActionArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendChatAction(args *SendChatActionArgs) (*bool, error) {
 	var success *bool
 	method := "sendChatAction"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -860,7 +862,7 @@ func (p *GetUserProfilePhotosArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetUserProfilePhotos(args *GetUserProfilePhotosArgs) (*UserProfilePhotos, error) {
 	var userProfilePhotos *UserProfilePhotos
 	method := "getUserProfilePhotos"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -883,7 +885,7 @@ func (p *GetFileArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetFile(args *GetFileArgs) (*File, error) {
 	var file *File
 	method := "getFile"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -908,7 +910,7 @@ func (p *KickChatMemberArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) KickChatMember(args *KickChatMemberArgs) (*bool, error) {
 	var success *bool
 	method := "kickChatMember"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -932,7 +934,7 @@ func (p *UnbanChatMemberArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) UnbanChatMember(args *UnbanChatMemberArgs) (*bool, error) {
 	var success *bool
 	method := "unbanChatMember"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -958,7 +960,7 @@ func (p *RestrictChatMemberArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) RestrictChatMember(args *RestrictChatMemberArgs) (*bool, error) {
 	var success *bool
 	method := "restrictChatMember"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -990,7 +992,7 @@ func (p *PromoteChatMemberArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) PromoteChatMember(args *PromoteChatMemberArgs) (*bool, error) {
 	var success *bool
 	method := "promoteChatMember"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1014,7 +1016,7 @@ func (p *SetChatPermissionsArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SetChatPermissions(args *SetChatPermissionsArgs) (*bool, error) {
 	var success *bool
 	method := "setChatPermissions"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1037,7 +1039,7 @@ func (p *ExportChatInviteLinkArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) ExportChatInviteLink(args *ExportChatInviteLinkArgs) (*string, error) {
 	var inviteLink *string
 	method := "exportChatInviteLink"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1066,7 +1068,7 @@ func (p *SetChatPhotoArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SetChatPhoto(args *SetChatPhotoArgs) (*bool, error) {
 	var success *bool
 	method := "setChatPhoto"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1089,7 +1091,7 @@ func (p *DeleteChatPhotoArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) DeleteChatPhoto(args *DeleteChatPhotoArgs) (*bool, error) {
 	var success *bool
 	method := "deleteChatPhoto"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1113,7 +1115,7 @@ func (p *SetChatTitleArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SetChatTitle(args *SetChatTitleArgs) (*bool, error) {
 	var success *bool
 	method := "setChatTitle"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1137,7 +1139,7 @@ func (p *SetChatDescriptionArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SetChatDescription(args *SetChatDescriptionArgs) (*bool, error) {
 	var success *bool
 	method := "setChatDescription"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1162,7 +1164,7 @@ func (p *PinChatMessageArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) PinChatMessage(args *PinChatMessageArgs) (*bool, error) {
 	var success *bool
 	method := "pinChatMessage"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1185,7 +1187,7 @@ func (p *UnpinChatMessageArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) UnpinChatMessage(args *UnpinChatMessageArgs) (*bool, error) {
 	var success *bool
 	method := "unpinChatMessage"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1208,7 +1210,7 @@ func (p *LeaveChatArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) LeaveChat(args *LeaveChatArgs) (*bool, error) {
 	var success *bool
 	method := "leaveChat"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1231,7 +1233,7 @@ func (p *GetChatArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetChat(args *GetChatArgs) (*Chat, error) {
 	var chat *Chat
 	method := "getChat"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1254,7 +1256,7 @@ func (p *GetChatAdministratorsArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetChatAdministrators(args *GetChatAdministratorsArgs) (*[]*ChatMember, error) {
 	var chatMembers *[]*ChatMember
 	method := "getChatAdministrators"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1277,7 +1279,7 @@ func (p *GetChatMembersCountArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetChatMembersCount(args *GetChatMembersCountArgs) (*int, error) {
 	var count *int
 	method := "getChatMembersCount"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1301,7 +1303,7 @@ func (p *GetChatMemberArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetChatMember(args *GetChatMemberArgs) (*ChatMember, error) {
 	var chatMember *ChatMember
 	method := "getChatMember"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1325,7 +1327,7 @@ func (p *SetChatStickerSetArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SetChatStickerSet(args *SetChatStickerSetArgs) (*bool, error) {
 	var success *bool
 	method := "setChatStickerSet"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1348,7 +1350,7 @@ func (p *DeleteChatStickerSetArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) DeleteChatStickerSet(args *DeleteChatStickerSetArgs) (*bool, error) {
 	var success *bool
 	method := "deleteChatStickerSet"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1375,7 +1377,7 @@ func (p *AnswerCallbackQueryArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) AnswerCallbackQuery(args *AnswerCallbackQueryArgs) (*bool, error) {
 	var success *bool
 	method := "answerCallbackQuery"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1403,7 +1405,7 @@ func (p *EditMessageTextArgs) GetRequestArgs() (*RequestArgs, error) {
 // https://core.telegram.org/bots/api#editmessagetext
 func (api *API) EditMessageText(args *EditMessageTextArgs) (*OptionalMessage, error) {
 	method := "editMessageText"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1427,7 +1429,7 @@ func (p *EditMessageCaptionArgs) GetRequestArgs() (*RequestArgs, error) {
 // https://core.telegram.org/bots/api#editmessagecaption
 func (api *API) EditMessageCaption(args *EditMessageCaptionArgs) (*OptionalMessage, error) {
 	method := "editMessageCaption"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1461,7 +1463,7 @@ func (p *EditMessageMediaArgs) GetRequestArgs() (*RequestArgs, error) {
 // https://core.telegram.org/bots/api#editmessagemedia
 func (api *API) EditMessageMedia(args *EditMessageMediaArgs) (*OptionalMessage, error) {
 	method := "editMessageMedia"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1483,7 +1485,7 @@ func (p *EditMessageReplyMarkupArgs) GetRequestArgs() (*RequestArgs, error) {
 // https://core.telegram.org/bots/api#editmessagereplymarkup
 func (api *API) EditMessageReplyMarkup(args *EditMessageReplyMarkupArgs) (*OptionalMessage, error) {
 	method := "editMessageReplyMarkup"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1505,7 +1507,7 @@ func (p *StopPollArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) StopPoll(args *StopPollArgs) (*Poll, error) {
 	var poll *Poll
 	method := "stopPoll"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1529,7 +1531,7 @@ func (p *DeleteMessageArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) DeleteMessage(args *DeleteMessageArgs) (*bool, error) {
 	var success *bool
 	method := "deleteMessage"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1561,7 +1563,7 @@ func (p *SendStickerArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendSticker(args *SendStickerArgs) (*Message, error) {
 	var message *Message
 	method := "sendSticker"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1584,7 +1586,7 @@ func (p *GetStickerSetArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetStickerSet(args *GetStickerSetArgs) (*StickerSet, error) {
 	var stickerSet *StickerSet
 	method := "getStickerSet"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1613,7 +1615,7 @@ func (p *UploadStickerFileArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) UploadStickerFile(args *UploadStickerFileArgs) (*File, error) {
 	var file *File
 	method := "uploadStickerFile"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1647,7 +1649,7 @@ func (p *CreateNewStickerSetArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) CreateNewStickerSet(args *CreateNewStickerSetArgs) (*bool, error) {
 	var success *bool
 	method := "createNewStickerSet"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1679,7 +1681,7 @@ func (p *AddStickerToSetArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) AddStickerToSet(args *AddStickerToSetArgs) (*bool, error) {
 	var success *bool
 	method := "addStickerToSet"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1703,7 +1705,7 @@ func (p *SetStickerPositionInSetArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SetStickerPositionInSet(args *SetStickerPositionInSetArgs) (*bool, error) {
 	var success *bool
 	method := "setStickerPositionInSet"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1726,7 +1728,7 @@ func (p *DeleteStickerFromSetArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) DeleteStickerFromSet(args *DeleteStickerFromSetArgs) (*bool, error) {
 	var success *bool
 	method := "deleteStickerFromSet"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1755,7 +1757,7 @@ func (p *AnswerInlineQueryArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) AnswerInlineQuery(args *AnswerInlineQueryArgs) (*bool, error) {
 	var success *bool
 	method := "answerInlineQuery"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1800,7 +1802,7 @@ func (p *SendInvoiceArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendInvoice(args *SendInvoiceArgs) (*Message, error) {
 	var message *Message
 	method := "sendInvoice"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1826,7 +1828,7 @@ func (p *AnswerShippingQueryArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) AnswerShippingQuery(args *AnswerShippingQueryArgs) (*bool, error) {
 	var success *bool
 	method := "answerShippingQuery"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1851,7 +1853,7 @@ func (p *AnswerPreCheckoutQueryArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) AnswerPreCheckoutQuery(args *AnswerPreCheckoutQueryArgs) (*bool, error) {
 	var success *bool
 	method := "answerPreCheckoutQuery"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1875,7 +1877,7 @@ func (p *SetPassportDataErrorsArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SetPassportDataErrors(args *SetPassportDataErrorsArgs) (*bool, error) {
 	var success *bool
 	method := "setPassportDataErrors"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1902,7 +1904,7 @@ func (p *SendGameArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) SendGame(args *SendGameArgs) (*Message, error) {
 	var message *Message
 	method := "sendGame"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1930,7 +1932,7 @@ func (p *SetGameScoreArgs) GetRequestArgs() (*RequestArgs, error) {
 // https://core.telegram.org/bots/api#setgamescore
 func (api *API) SetGameScore(args *SetGameScoreArgs) (*OptionalMessage, error) {
 	method := "setGameScore"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
@@ -1953,7 +1955,7 @@ func (p *GetGameHighScoresArgs) GetRequestArgs() (*RequestArgs, error) {
 func (api *API) GetGameHighScores(args *GetGameHighScoresArgs) (*[]*GameHighScore, error) {
 	var gameHighScore *[]*GameHighScore
 	method := "getGameHighScores"
-	timeout := 5 * time.Second
+	timeout := Timeout * time.Second
 	response, err := api.execute(method, args, timeout)
 	if err != nil {
 		return nil, err
