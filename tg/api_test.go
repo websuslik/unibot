@@ -91,9 +91,35 @@ func TestGetUpdates(t *testing.T) {
 
 func TestSetWebhook(t *testing.T) {
 	m, api := setUpMock("setWebhook", commonTrueResponse)
-	args := &tg.SetWebhookArgs{}
+	args := &tg.SetWebhookArgs{URL: "https://example.com"}
 	res, err := api.SetWebhook(args)
 	m.AssertExpectations(t)
 	assert.Nil(t, err)
 	assert.Equal(t, *res, true)
+}
+
+func TestDeleteWebhook(t *testing.T) {
+	m, api := setUpMock("deleteWebhook", commonTrueResponse)
+	args := &tg.DeleteWebhookArgs{}
+	res, err := api.DeleteWebhook(args)
+	m.AssertExpectations(t)
+	assert.Nil(t, err)
+	assert.Equal(t, *res, true)
+}
+
+func TestGetWebhookInfo(t *testing.T) {
+	m, api := setUpMock("getWebhookInfo", map[string]interface{}{
+		"ok": true,
+		"result": map[string]interface{}{
+			"url":                    "https://example.com",
+			"has_custom_certificate": false,
+			"pending_update_count":   14,
+		},
+	})
+	args := &tg.GetWebhookInfoArgs{}
+	res, err := api.GetWebhookInfo(args)
+	m.AssertExpectations(t)
+	assert.Nil(t, err)
+	assert.Equal(t, res.URL, "https://example.com")
+	assert.Equal(t, res.PendingUpdateCount, 14)
 }
