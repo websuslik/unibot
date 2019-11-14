@@ -13,14 +13,8 @@ import (
 
 const Timeout = 15
 
-type HTTPClient interface {
-	Do(req *http.Request, timeout time.Duration) (*http.Response, error)
-}
-
-// https://core.telegram.org/bots/api Bot API 4.4
-type API struct {
-	Token  string
-	Client HTTPClient
+type HttpClient interface {
+	Do(url string, args *RequestArgs, timeout time.Duration) ([]byte, error)
 }
 
 type MethodArgs interface {
@@ -32,21 +26,16 @@ type RequestArgs struct {
 	Headers map[string]string
 }
 
-func (api *API) buildRequest(method string, args MethodArgs) (*http.Request, error) {
-	url := fmt.Sprintf("https://api.telegram.org/bot%s/%s", api.Token, method)
-	requestArgs, err := args.GetRequestArgs()
-	if err != nil {
-		return nil, err
-	}
-	request, _ := http.NewRequest("POST", url, requestArgs.Body)
-	for key, value := range requestArgs.Headers {
-		request.Header.Set(key, value)
-	}
-	return request, nil
+type DefaultHttpClient struct {
 }
 
-func (api *API) sendRequest(request *http.Request, timeout time.Duration) ([]byte, error) {
-	response, err := api.Client.Do(request, timeout)
+func (c *DefaultHttpClient) Do(url string, args *RequestArgs, timeout time.Duration) ([]byte, error) {
+	client := &http.Client{Timeout: timeout}
+	request, _ := http.NewRequest("POST", url, args.Body)
+	for key, value := range args.Headers {
+		request.Header.Set(key, value)
+	}
+	response, err := client.Do(request)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +47,33 @@ func (api *API) sendRequest(request *http.Request, timeout time.Duration) ([]byt
 		return nil, err
 	}
 	return result, nil
+}
+
+// https://core.telegram.org/bots/api Bot API 4.4
+type API struct {
+	Token  string
+	Client HttpClient
+}
+
+func (api *API) buildRequestArgs(args MethodArgs) (*RequestArgs, error) {
+	requestArgs, err := args.GetRequestArgs()
+	if err != nil {
+		return nil, err
+	}
+	return requestArgs, nil
+}
+
+func (api *API) buildURL(method string) string {
+	return fmt.Sprintf("https://api.telegram.org/bot%s/%s", api.Token, method)
+}
+
+func (api *API) sendRequest(url string, args *RequestArgs, timeout time.Duration) ([]byte, error) {
+	if api.Client != nil {
+		return api.Client.Do(url, args, timeout)
+	}
+	client := new(DefaultHttpClient)
+	return client.Do(url, args, timeout)
+
 }
 
 func (api *API) parseResponseBody(body []byte) (map[string]*json.RawMessage, error) {
@@ -84,11 +100,12 @@ func (api *API) checkIfSuccess(result map[string]*json.RawMessage) error {
 }
 
 func (api *API) execute(method string, args MethodArgs, timeout time.Duration) (*json.RawMessage, error) {
-	request, err := api.buildRequest(method, args)
+	url := api.buildURL(method)
+	requestArgs, err := api.buildRequestArgs(args)
 	if err != nil {
 		return nil, NewBuildRequestError(err.Error())
 	}
-	body, err := api.sendRequest(request, timeout)
+	body, err := api.sendRequest(url, requestArgs, timeout)
 	if err != nil {
 		return nil, NewSendRequestError(err.Error())
 	}

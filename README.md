@@ -15,22 +15,11 @@ package main
 import (
 	"github.com/websuslik/unibot/tg"
 	"log"
-	"net/http"
-	"time"
 )
-
-type Client struct {
-}
-
-func (m Client) Do(req *http.Request, timeout time.Duration) (*http.Response, error) {
-	client := &http.Client{Timeout: timeout}
-	return client.Do(req)
-}
 
 func main() {
 	api := tg.API{
-		Token:  "873254919:AAGqsPS3GXmKi3l-JMqHHUPfFbfZLuHFO6E",
-		Client: new(Client),
+		Token: "bot_api_token",
 	}
 	offset := 0
 	for {
@@ -55,6 +44,5 @@ func main() {
 		}
 	}
 }
-
 
 ```
