@@ -15,12 +15,15 @@ package main
 import (
 	"github.com/websuslik/unibot/tg"
 	"log"
-	"time"
+	"net/http"
 )
 
 func main() {
-	api := tg.API{Token: "API_TOKEN"}
-	offset := 0
+    api := tg.API{
+		Token: "API_TOKEN",
+		ClientBuilder: func() *http.Client { return &http.Client{} },
+	}	
+    offset := 0
 	for {
 		args := &tg.GetUpdatesArgs{
 			Timeout: 30,

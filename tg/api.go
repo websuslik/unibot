@@ -15,7 +15,8 @@ const Timeout = 15
 
 // https://core.telegram.org/bots/api Bot API 4.4
 type API struct {
-	Token string
+	Token         string
+	ClientBuilder func() *http.Client
 }
 
 type MethodArgs interface {
@@ -41,7 +42,8 @@ func (api *API) buildRequest(method string, args MethodArgs) (*http.Request, err
 }
 
 func (api *API) sendRequest(request *http.Request, timeout time.Duration) ([]byte, error) {
-	client := &http.Client{Timeout: timeout}
+	client := api.ClientBuilder()
+	client.Timeout = timeout
 	response, err := client.Do(request)
 	if err != nil {
 		return nil, err
